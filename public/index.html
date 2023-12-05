@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Google Ranking Checker</title>
+</head>
+<body>
+  <h1>Google Ranking Checker</h1>
+  <form id="rankingForm">
+    <label for="query">Query:</label>
+    <input type="text" id="query" name="query" required><br><br>
+    <label for="website_url">Website URL:</label>
+    <input type="text" id="website_url" name="website_url" required><br><br>
+    <button type="button" onclick="checkRanking()">Check Ranking</button>
+  </form>
+  <p id="resultMessage"></p>
+
+  <script>
+    async function checkRanking() {
+      const query = document.getElementById('query').value;
+      const websiteUrl = document.getElementById('website_url').value;
+
+      const response = await fetch('/check_ranking', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ query, website_url: websiteUrl })
+      });
+
+      const data = await response.json();
+      document.getElementById('resultMessage').innerText = data.message;
+    }
+  </script>
+</body>
+</html>
