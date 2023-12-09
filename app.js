@@ -52,3 +52,5 @@ app.post('/check_ranking', async (req, res) => {
 app.listen(3000, () => {
   console.log('Server running on port 3000');
 });
+
+// http://localhost:3000/
