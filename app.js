@@ -8,7 +8,9 @@ app.use(express.static('public'));
 
 async function getGoogleRanking(query, websiteUrl) {
   try {
-    const browser = await puppeteer.launch();
+    // const browser = await puppeteer.launch();
+    const browser = await puppeteer.launch({ headless: false });
+
     const page = await browser.newPage();
 
     const queryFormatted = query.replace(' ', '+');
