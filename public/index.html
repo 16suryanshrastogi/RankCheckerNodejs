@@ -6,19 +6,15 @@
 </head>
 <body>
   <h1>Google Ranking Checker</h1>
-  <form id="rankingForm">
-    <label for="query">Query:</label>
-    <input type="text" id="query" name="query" required><br><br>
-    <label for="website_url">Website URL:</label>
-    <input type="text" id="website_url" name="website_url" required><br><br>
-    <button type="button" onclick="checkRanking()">Check Ranking</button>
-  </form>
-  <p id="resultMessage"></p>
+  <input type="text" id="query" placeholder="Enter query">
+  <input type="text" id="websiteUrl" placeholder="Enter website URL">
+  <button onclick="checkRanking()">Check Ranking</button>
+  <p id="result"></p>
 
   <script>
     async function checkRanking() {
       const query = document.getElementById('query').value;
-      const websiteUrl = document.getElementById('website_url').value;
+      const websiteUrl = document.getElementById('websiteUrl').value;
 
       const response = await fetch('/check_ranking', {
         method: 'POST',
@@ -29,7 +25,7 @@
       });
 
       const data = await response.json();
-      document.getElementById('resultMessage').innerText = data.message;
+      document.getElementById('result').innerText = data.message;
     }
   </script>
 </body>

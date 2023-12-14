@@ -1,18 +1,16 @@
 const express = require('express');
-const bodyParser = require('body-parser');
 const puppeteer = require('puppeteer');
+require('dotenv').config();
+const path = require('path'); // Import the 'path' module
 
 const app = express();
-app.use(bodyParser.json());
-app.use(express.static('public'));
+app.use(express.json());
+app.use(express.static('public')); // Serve static files from the 'public' folder
+
 
 async function getGoogleRanking(query, websiteUrl) {
   try {
-    // const browser = await puppeteer.launch();
-    // const browser = await puppeteer.launch({ headless: false });
-    const browser = await puppeteer.launch({
-      ignoreDefaultArgs: ['--disable-extensions'],
-    });
+    const browser = await puppeteer.launch({ headless: true }); // Headless mode
     const page = await browser.newPage();
 
     const queryFormatted = query.replace(' ', '+');
@@ -25,8 +23,8 @@ async function getGoogleRanking(query, websiteUrl) {
 
     for (let index = 0; index < searchResults.length; index++) {
       const result = searchResults[index];
-
       const resultUrl = await result.$eval('a', (el) => el.href);
+
       if (resultUrl.includes(websiteUrl)) {
         await browser.close();
         return index + 1; // Adding 1 to make it human-readable (1-based index)
@@ -52,9 +50,12 @@ app.post('/check_ranking', async (req, res) => {
 
   res.json({ message });
 });
-
-app.listen(3000, () => {
-  console.log('Server running on port 3000');
+// Route handler for the root URL ("/")
+app.get('/', (req, res) => {
+  res.sendFile(path.join(__dirname, 'public', 'index.html')); // Send the index.html file
 });
 
-// http://localhost:3000/
+const PORT = process.env.PORT || 3000;
+app.listen(PORT, () => {
+  console.log(`Server running on port ${PORT}`);
+});
