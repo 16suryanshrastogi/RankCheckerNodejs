@@ -14,7 +14,7 @@ async function getGoogleRanking(query, websiteUrl) {
     const page = await browser.newPage();
 
     const queryFormatted = query.replace(' ', '+');
-    const googleUrl = `https://www.google.com/search?q=${queryFormatted}`;
+    const googleUrl = `${queryFormatted}`;
 
     await page.goto(googleUrl);
     await page.waitForSelector('.tF2Cxc');
